@@ -356,7 +356,7 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 EXTRA_DIST = \
-    nlbuild-autotools                          \
+    nlbuild-autotools               \
     $(NULL)
 
 # Always package (e.g. for 'make dist') these subdirectories.

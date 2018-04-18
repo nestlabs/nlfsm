@@ -438,6 +438,7 @@ EXTRA_DIST = \
     Makefile-bootstrap                      \
     README.md                               \
     .default-version                        \
+    .travis.yml                             \
     bootstrap                               \
     bootstrap-configure                     \
     $(srcdir)/third_party/nlbuild-autotools \
@@ -988,9 +989,9 @@ include $(abs_top_nlbuild_autotools_dir)/automake/pre.am
 
 #
 # Override autotool's default notion of the package version variables.
-# This ensures that when we create a source distribution that the
-# version is always the current version, not the version when the
-# package was bootstrapped.
+# This ensures that when we create a source distribution the
+# version is always the current version, not the package bootstrap
+# version.
 #
 
 NLFSM_VERSION                     ?= $(shell cat $(VERSION_FILE) 2> /dev/null)
