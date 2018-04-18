@@ -31,7 +31,7 @@ AC_PREREQ([2.68])
 #
 # Initialize autoconf for the package
 #
-AC_INIT([NLFSM],
+AC_INIT([nlfsm],
         m4_esyscmd([third_party/nlbuild-autotools/repo//scripts/mkversion -b `cat .default-version` .]),
         [nlfsm-users@google.com],
         [nlfsm],
@@ -282,7 +282,6 @@ AC_MSG_NOTICE([checking package dependencies])
 
 AC_PATH_PROG([PKG_CONFIG],[pkg-config])
 
-
 #
 # Nlassert
 #
@@ -313,12 +312,31 @@ NL_WITH_PACKAGE(
     ]
 )
 
+# Depending on whether nlassert has been configured for an internal
+# location, it's directory stem within this package needs to be set
+# accordingly. In addition, if the location is internal, then we need
+# to attempt to pull it down using the bootstrap makefile.
+
+if test "${nl_with_nlassert}" = "internal"; then
+    maybe_nlassert_dirstem="nlassert/repo"
+    nlassert_dirstem="third_party/${maybe_nlassert_dirstem}"
+
+    AC_MSG_NOTICE([attempting to create internal ${nlassert_dirstem}])
+
+    ${MAKE-make} --no-print-directory -C ${srcdir} -f Makefile-bootstrap ${nlassert_dirstem}
+
+    if test $? -ne 0; then
+        AC_MSG_ERROR([failed to create ${nlassert_dirstem}. Please check your network connection or the correctness of 'repos.conf'])
+    fi
+else
+    maybe_nlassert_dirstem=""
+fi
+
+AC_SUBST(NLASSERT_SUBDIRS, [${maybe_nlassert_dirstem}])
 AM_CONDITIONAL([NLFSM_WITH_NLASSERT_INTERNAL], [test "${nl_with_nlassert}" = "internal"])
 
-
-
 #
-# Nlunittest
+# Nlunit-test
 #
 
 if test "${nl_cv_build_tests}" = "yes"; then
@@ -348,6 +366,27 @@ if test "${nl_cv_build_tests}" = "yes"; then
         ])
 fi
 
+# Depending on whether nlunit-test has been configured for an internal
+# location, it's directory stem within this package needs to be set
+# accordingly. In addition, if the location is internal, then we need
+# to attempt to pull it down using the bootstrap makefile.
+
+if test "${nl_with_nlunit_test}" = "internal"; then
+    maybe_nlunit_test_dirstem="nlunit-test/repo"
+    nlunit_test_dirstem="third_party/${maybe_nlunit_test_dirstem}"
+
+    AC_MSG_NOTICE([attempting to create internal ${nlunit_test_dirstem}])
+
+    ${MAKE-make} --no-print-directory -C ${srcdir} -f Makefile-bootstrap ${nlunit_test_dirstem}
+
+    if test $? -ne 0; then
+        AC_MSG_ERROR([failed to create ${nlunit_test_dirstem}. Please check your network connection or the correctness of 'repos.conf'])
+    fi
+else
+    maybe_nlunit_test_dirstem=""
+fi
+
+AC_SUBST(NLUNIT_TEST_SUBDIRS, [${maybe_nlunit_test_dirstem}])
 AM_CONDITIONAL([NLFSM_WITH_NLUNIT_TEST_INTERNAL], [test "${nl_with_nlunit_test}" = "internal"])
 
 #
@@ -391,10 +430,10 @@ CPPFLAGS="${CPPFLAGS} ${NLUNIT_TEST_CPPFLAGS}"
 LDFLAGS="${LDFLAGS} ${NLUNIT_TEST_LDFLAGS}"
 LIBS="${LIBS} ${NLUNIT_TEST_LIBS}"
 
-# Add any code coverage CPPFLAGS and LDFLAGS
+# Add any code coverage CPPFLAGS and LIBS
 
 CPPFLAGS="${CPPFLAGS} ${NL_COVERAGE_CPPFLAGS}"
-LDFLAGS="${LDFLAGS} ${NL_COVERAGE_LDFLAGS}"
+LIBS="${LIBS} ${NL_COVERAGE_LIBS}"
 
 # At this point, we can restore the compiler flags to whatever the
 # user passed in, now that we're clear of an -Werror issues by
@@ -404,7 +443,7 @@ NL_RESTORE_WERROR
 
 # Configure any autotools-based subdirectories
 if test "${nl_with_nlassert}" = "internal"; then
-AC_CONFIG_SUBDIRS([third_party/nlassert/repo])
+    AC_CONFIG_SUBDIRS([third_party/nlassert/repo])
 fi
 
 
