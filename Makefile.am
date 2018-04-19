@@ -35,11 +35,14 @@ EXTRA_DIST                                = \
     CHANGES                                 \
     CONTRIBUTING.md                         \
     LICENSE                                 \
+    Makefile-bootstrap                      \
     README.md                               \
     .default-version                        \
+    .travis.yml                             \
     bootstrap                               \
     bootstrap-configure                     \
     $(srcdir)/third_party/nlbuild-autotools \
+    repos.conf                              \
     $(NULL)
 
 BUILT_SOURCES                             = \
@@ -77,9 +80,9 @@ VERSION_FILE                      := $(if $(wildcard $(builddir)/.local-version)
 
 #
 # Override autotool's default notion of the package version variables.
-# This ensures that when we create a source distribution that the
-# version is always the current version, not the version when the
-# package was bootstrapped.
+# This ensures that when we create a source distribution the
+# version is always the current version, not the package bootstrap
+# version.
 #
 
 NLFSM_VERSION                     ?= $(shell cat $(VERSION_FILE) 2> /dev/null)
@@ -141,9 +144,24 @@ $(distdir)/.dist-version: $(builddir)/.local-version force
 $(distdir)/.dist-version $(builddir)/.local-version:
 	$(call check-file,$(@F))
 
-dist distcheck install-headers: $(BUILT_SOURCES)
+#
+# When we run 'distcheck' and --with-nlassert or --with-nlunit_test
+# default to 'internal', the nlbuild-autotools infrastructure will
+# attempt to create git paths to manage the nlunit-test repo. Two
+# directories need to be writable to facilitate this.
+#
+DISTCHECK_CONFIGURE_FLAGS=`chmod u+w .. ../third_party`
+
+dist distcheck: $(BUILT_SOURCES)
 
 dist-hook: $(distdir)/.dist-version
+
+#
+# Ensure any locally synchronized repositories defined by 'repos.conf'
+# are cleaned up.
+#
+distclean-local:
+	$(MAKE) -C $(srcdir) -f Makefile-bootstrap clean-repos
 
 #
 # Top-level convenience target for making a documentation-only
