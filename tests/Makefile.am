@@ -85,10 +85,10 @@ NLFSM_COVERAGE_INFO                             = ${NLFSM_COVERAGE_BUNDLE}/${PAC
 $(NLFSM_COVERAGE_BUNDLE):
 	$(call create-directory)
 
-$(NLFSM_COVERAGE_INFO): check | $(NLFSM_COVERAGE_BUNDLE)
+$(NLFSM_COVERAGE_INFO): check-local | $(NLFSM_COVERAGE_BUNDLE)
 	$(call generate-coverage-report,${top_builddir})
 
-coverage: $(NLFSM_COVERAGE_INFO)
+coverage-local: $(NLFSM_COVERAGE_INFO)
 
 clean-local: clean-local-coverage
 
