@@ -22,18 +22,24 @@
 
 include $(abs_top_nlbuild_autotools_dir)/automake/pre.am
 
-include_HEADERS                                 = \
-    nestlabs/fsm/nlfsm-driver.hpp                 \
-    nestlabs/fsm/nlfsm-event.hpp                  \
-    nestlabs/fsm/nlfsm.hpp                        \
-    nestlabs/fsm/nlfsm-machine.hpp                \
-    nestlabs/fsm/nlfsm-state-delegate-always.hpp  \
-    nestlabs/fsm/nlfsm-state-delegate-base.hpp    \
-    nestlabs/fsm/nlfsm-state-delegate-boolean.hpp \
-    nestlabs/fsm/nlfsm-state-delegate-never.hpp   \
-    nestlabs/fsm/nlfsm-state-delegate-random.hpp  \
-    nestlabs/fsm/nlfsm-state.hpp                  \
-    nestlabs/fsm/nlfsm-transition.hpp             \
+nlfsm_dirstem                                       = \
+    nestlabs/fsm
+
+nlfsm_includedir                                    = \
+    $(includedir)/$(nlfsm_dirstem)
+
+nlfsm_include_HEADERS                               = \
+    $(nlfsm_dirstem)/nlfsm-driver.hpp                 \
+    $(nlfsm_dirstem)/nlfsm-event.hpp                  \
+    $(nlfsm_dirstem)/nlfsm.hpp                        \
+    $(nlfsm_dirstem)/nlfsm-machine.hpp                \
+    $(nlfsm_dirstem)/nlfsm-state-delegate-always.hpp  \
+    $(nlfsm_dirstem)/nlfsm-state-delegate-base.hpp    \
+    $(nlfsm_dirstem)/nlfsm-state-delegate-boolean.hpp \
+    $(nlfsm_dirstem)/nlfsm-state-delegate-never.hpp   \
+    $(nlfsm_dirstem)/nlfsm-state-delegate-random.hpp  \
+    $(nlfsm_dirstem)/nlfsm-state.hpp                  \
+    $(nlfsm_dirstem)/nlfsm-transition.hpp             \
     $(NULL)
 
 install-headers: install-data
