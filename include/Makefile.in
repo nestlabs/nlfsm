@@ -105,7 +105,7 @@ subdir = include
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(srcdir)/nlfsm-config.h.in \
 	$(top_srcdir)/third_party/nlbuild-autotools/repo/third_party/autoconf/mkinstalldirs \
-	$(include_HEADERS)
+	$(nlfsm_include_HEADERS)
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/third_party/nlbuild-autotools/repo/autoconf/m4/ax_check_compiler.m4 \
 	$(top_srcdir)/third_party/nlbuild-autotools/repo/autoconf/m4/nl_enable_coverage.m4 \
@@ -176,8 +176,8 @@ am__uninstall_files_from_dir = { \
     || { echo " ( cd '$$dir' && rm -f" $$files ")"; \
          $(am__cd) "$$dir" && rm -f $$files; }; \
   }
-am__installdirs = "$(DESTDIR)$(includedir)"
-HEADERS = $(include_HEADERS)
+am__installdirs = "$(DESTDIR)$(nlfsm_includedir)"
+HEADERS = $(nlfsm_include_HEADERS)
 am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) \
 	$(LISP)nlfsm-config.h.in
 # Read a list of newline-separated strings from the standard input,
@@ -347,18 +347,24 @@ target_vendor = @target_vendor@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-include_HEADERS = \
-    nestlabs/fsm/nlfsm-driver.hpp                 \
-    nestlabs/fsm/nlfsm-event.hpp                  \
-    nestlabs/fsm/nlfsm.hpp                        \
-    nestlabs/fsm/nlfsm-machine.hpp                \
-    nestlabs/fsm/nlfsm-state-delegate-always.hpp  \
-    nestlabs/fsm/nlfsm-state-delegate-base.hpp    \
-    nestlabs/fsm/nlfsm-state-delegate-boolean.hpp \
-    nestlabs/fsm/nlfsm-state-delegate-never.hpp   \
-    nestlabs/fsm/nlfsm-state-delegate-random.hpp  \
-    nestlabs/fsm/nlfsm-state.hpp                  \
-    nestlabs/fsm/nlfsm-transition.hpp             \
+nlfsm_dirstem = \
+    nestlabs/fsm
+
+nlfsm_includedir = \
+    $(includedir)/$(nlfsm_dirstem)
+
+nlfsm_include_HEADERS = \
+    $(nlfsm_dirstem)/nlfsm-driver.hpp                 \
+    $(nlfsm_dirstem)/nlfsm-event.hpp                  \
+    $(nlfsm_dirstem)/nlfsm.hpp                        \
+    $(nlfsm_dirstem)/nlfsm-machine.hpp                \
+    $(nlfsm_dirstem)/nlfsm-state-delegate-always.hpp  \
+    $(nlfsm_dirstem)/nlfsm-state-delegate-base.hpp    \
+    $(nlfsm_dirstem)/nlfsm-state-delegate-boolean.hpp \
+    $(nlfsm_dirstem)/nlfsm-state-delegate-never.hpp   \
+    $(nlfsm_dirstem)/nlfsm-state-delegate-random.hpp  \
+    $(nlfsm_dirstem)/nlfsm-state.hpp                  \
+    $(nlfsm_dirstem)/nlfsm-transition.hpp             \
     $(NULL)
 
 all: nlfsm-config.h
@@ -416,27 +422,27 @@ mostlyclean-libtool:
 
 clean-libtool:
 	-rm -rf .libs _libs
-install-includeHEADERS: $(include_HEADERS)
+install-nlfsm_includeHEADERS: $(nlfsm_include_HEADERS)
 	@$(NORMAL_INSTALL)
-	@list='$(include_HEADERS)'; test -n "$(includedir)" || list=; \
+	@list='$(nlfsm_include_HEADERS)'; test -n "$(nlfsm_includedir)" || list=; \
 	if test -n "$$list"; then \
-	  echo " $(MKDIR_P) '$(DESTDIR)$(includedir)'"; \
-	  $(MKDIR_P) "$(DESTDIR)$(includedir)" || exit 1; \
+	  echo " $(MKDIR_P) '$(DESTDIR)$(nlfsm_includedir)'"; \
+	  $(MKDIR_P) "$(DESTDIR)$(nlfsm_includedir)" || exit 1; \
 	fi; \
 	for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  echo "$$d$$p"; \
 	done | $(am__base_list) | \
 	while read files; do \
-	  echo " $(INSTALL_HEADER) $$files '$(DESTDIR)$(includedir)'"; \
-	  $(INSTALL_HEADER) $$files "$(DESTDIR)$(includedir)" || exit $$?; \
+	  echo " $(INSTALL_HEADER) $$files '$(DESTDIR)$(nlfsm_includedir)'"; \
+	  $(INSTALL_HEADER) $$files "$(DESTDIR)$(nlfsm_includedir)" || exit $$?; \
 	done
 
-uninstall-includeHEADERS:
+uninstall-nlfsm_includeHEADERS:
 	@$(NORMAL_UNINSTALL)
-	@list='$(include_HEADERS)'; test -n "$(includedir)" || list=; \
+	@list='$(nlfsm_include_HEADERS)'; test -n "$(nlfsm_includedir)" || list=; \
 	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
-	dir='$(DESTDIR)$(includedir)'; $(am__uninstall_files_from_dir)
+	dir='$(DESTDIR)$(nlfsm_includedir)'; $(am__uninstall_files_from_dir)
 
 ID: $(am__tagged_files)
 	$(am__define_uniq_tagged_files); mkid -fID $$unique
@@ -524,7 +530,7 @@ check-am: all-am
 check: check-am
 all-am: Makefile $(HEADERS) nlfsm-config.h
 installdirs:
-	for dir in "$(DESTDIR)$(includedir)"; do \
+	for dir in "$(DESTDIR)$(nlfsm_includedir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -577,7 +583,7 @@ info: info-am
 
 info-am:
 
-install-data-am: install-includeHEADERS
+install-data-am: install-nlfsm_includeHEADERS
 
 install-dvi: install-dvi-am
 
@@ -621,7 +627,7 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-includeHEADERS
+uninstall-am: uninstall-nlfsm_includeHEADERS
 
 .MAKE: all install-am install-strip
 
@@ -631,13 +637,13 @@ uninstall-am: uninstall-includeHEADERS
 	distclean-tags distdir dvi dvi-am html html-am info info-am \
 	install install-am install-data install-data-am install-dvi \
 	install-dvi-am install-exec install-exec-am install-html \
-	install-html-am install-includeHEADERS install-info \
-	install-info-am install-man install-pdf install-pdf-am \
+	install-html-am install-info install-info-am install-man \
+	install-nlfsm_includeHEADERS install-pdf install-pdf-am \
 	install-ps install-ps-am install-strip installcheck \
 	installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-generic \
 	mostlyclean-libtool pdf pdf-am ps ps-am tags tags-am uninstall \
-	uninstall-am uninstall-includeHEADERS
+	uninstall-am uninstall-nlfsm_includeHEADERS
 
 
 include $(abs_top_nlbuild_autotools_dir)/automake/pre.am
