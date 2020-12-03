@@ -14,8 +14,8 @@ consisting of starting state, ending state, and excitation input event
 tuples and a delegate to handle upcalls on various transition table
 events.
 
-[nlfsm-travis]: https://travis-ci.org/nestlabs/nlfsm
-[nlfsm-travis-svg]: https://travis-ci.org/nestlabs/nlfsm.svg?branch=master
+[nlfsm-travis]: https://travis-ci.com/nestlabs/nlfsm
+[nlfsm-travis-svg]: https://travis-ci.com/nestlabs/nlfsm.svg?branch=master
 [nlfsm-codecov]: https://codecov.io/gh/nestlabs/nlfsm
 [nlfsm-codecov-svg]: https://codecov.io/gh/nestlabs/nlfsm/branch/master/graph/badge.svg
 
